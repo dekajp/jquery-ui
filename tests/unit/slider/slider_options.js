@@ -314,4 +314,62 @@ test( "range", function() {
 	element.slider( "destroy" );
 });
 
+test( "ticket-3762", function() {
+	expect( 6 );
+	//Slider: handles restricted properly when set programmatically 
+	
+	element = $( "<div></div>" ).slider({
+		range: true,
+		min: 10,
+		max: 100,
+		step: 1,
+		values: [ 15, 1 ]
+	});
+	deepEqual( element.slider( "values" ), [ 10, 10 ], "option values" );
+
+	element = $( "<div></div>" ).slider({
+		range: true,
+		min: 10,
+		max: 100,
+		step: 1,
+		values: [ 1, 101 ]
+	});
+	deepEqual( element.slider( "values" ), [ 10, 100 ], "option values" );
+
+	element = $( "<div></div>" ).slider({
+		range: false,
+		min: 10,
+		max: 100,
+		step: 1,
+		values: [ 11, 22, 15, 44 ]
+	});
+	deepEqual( element.slider( "values" ), [ 11, 15, 15, 44 ], "option values" );
+
+	element = $( "<div></div>" ).slider({
+		range: false,
+		min: 10,
+		max: 100,
+		step: 1,
+		values: [ 11, 22, 33, 44 ]
+	});
+
+	element.slider( "option", "values" , [ 11, 22, 15, 44 ]);
+	deepEqual( element.slider( "values" ), [ 11, 15, 15, 44 ], "option values" );
+
+	element = $( "<div></div>" ).slider({
+		range: false,
+		min: 10,
+		max: 100,
+		step: 1,
+		values: [ 11 ]
+	});
+
+	element.slider( "option", "values" , [ 1 ]);
+	deepEqual( element.slider( "values" ), [ 10 ], "option values" );
+
+	element.slider( "option", "values" , [ 101 ]);
+	deepEqual( element.slider( "values" ), [ 100 ], "option values" );
+
+});
+
 })( jQuery );
